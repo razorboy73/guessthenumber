@@ -14,32 +14,26 @@ document.querySelector('.check').addEventListener('click', function () {
   let playGame = true;
 
   if (!guess) {
-    document.querySelector('.message').textContent = 'Pick a real number!';
+    messageText('Pick a real number!');
   } else if (guess === number) {
     let backgroundcolor = document.querySelector('body');
     backgroundcolor.style.backgroundColor = 'green';
     document.querySelector('.number').style.width = '45rem';
-    document.querySelector('.message').textContent = 'You Got It!!!';
+    messageText('You Got It!!!');
     document.querySelector('.number').textContent = number;
     playGame = false;
-  } else if (guess > number) {
-    if (score > 1) {
-      document.querySelector('.message').textContent = 'Too High';
-      score = score - 1;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'You Lost';
-      document.querySelector('.score').textContent = 0;
+  } else if (guess !== number) {
+    if (score > 1 && guess > number) {
+      messageText('Too High');
     }
-  } else if (guess < number) {
-    if (score > 1) {
-      document.querySelector('.message').textContent = 'Too Low';
-      score = score - 1;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'You Lost';
-      document.querySelector('.score').textContent = 0;
+    if (score > 1 && guess < number) {
+      messageText('Too Low');
     }
+    score = score - 1;
+    scoreContent(score);
+  } else {
+    messageText('You Lost');
+    scoreContent(0);
   }
 });
 
@@ -48,8 +42,8 @@ document.querySelector('.again').addEventListener('click', function () {
     document.querySelector('.highscore').textContent = score;
   }
   score = 20;
-  document.querySelector('.message').textContent = 'Start guessing...';
-  document.querySelector('.score').textContent = score;
+  messageText('Start guessing...');
+  scoreContent(score);
   document.querySelector('.number').textContent = '?';
   let backgroundcolor = document.querySelector('body');
   backgroundcolor.style.backgroundColor = 'black';
@@ -61,4 +55,12 @@ document.querySelector('.again').addEventListener('click', function () {
 
 function randomNumber() {
   return Math.trunc(Math.random() * 20) + 1;
+}
+
+function messageText(content) {
+  return (document.querySelector('.message').textContent = content);
+}
+
+function scoreContent(content) {
+  return (document.querySelector('.score').textContent = content);
 }
